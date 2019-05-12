@@ -5,7 +5,7 @@ node_js:
 env:
   - CODECOV_TOKEN="5635efd8-2f5b-423a-99f1-f96b5b7140a0"
 
-before_script:
+install:
   - npm install -g typescript
   - npm i
 

@@ -1,7 +1,7 @@
-import { verbosify } from ".";
+import { verbosify } from '.';
 
 test('Verbosify should execute function correctly', () => {
-  const addTwo = (x: number) => x + 2; 
+  const addTwo = (x: number) => x + 2;
 
   const wrappedAddTwo = verbosify(addTwo);
   let input = 4;
