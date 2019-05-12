@@ -9,7 +9,8 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "report": "codecov",
     "lint": "eslint **/*.ts",
-    "test": "jest --config jestconfig.json"
+    "test": "jest --config jestconfig.json",
+    "testwatch": "jest --config jestconfig.json --watch"
   },
   "keywords": [],
   "author": "",
