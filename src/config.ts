@@ -5,7 +5,7 @@ interface IGranularVerbosifySetting {
 
 type VerbosifySetting = true | false | IGranularVerbosifySetting;
 
-type SupportedLogTool = 'winston' | 'console'
+type SupportedLogTool = 'winston' | 'console';
 
 export interface IVerbosifyConfig {
   features: Record<string, VerbosifySetting>;
@@ -34,7 +34,7 @@ class VerbosityConfig implements IVerbosifyConfig {
   initialize(config: IVerbosifyConfig) {
     this.features = { ...config.features };
     this.logger = config.logger;
-    switch(config.logger) {
+    switch (config.logger) {
       case 'console': {
         break;
       }
@@ -46,14 +46,14 @@ class VerbosityConfig implements IVerbosifyConfig {
         break;
       }
       default: {
-        throw new Error('Unsupported log tool: ' + config.logger)
+        throw new Error('Unsupported log tool: ' + config.logger);
       }
     }
     this.initialized = true;
   }
 
   log(message: string, keyValues?: Record<string, any>) {
-    switch(this.logger) {
+    switch (this.logger) {
       case 'console': {
         const keyValuesString = keyValues ? ': ' + JSON.stringify(keyValues) : '';
         return console.log(message + keyValuesString);

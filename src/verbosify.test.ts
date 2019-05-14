@@ -1,6 +1,5 @@
 import { Config, verbosify, initializeVerbosify } from '.';
 
-
 test('Verbosify should execute function correctly', () => {
   Config.unmount();
   const addTwo = (x: number) => x + 2;
@@ -20,7 +19,6 @@ test('Verbosify should execute a function correctly with no args', () => {
   const result = wrappedNamePackage();
   expect(result.name).toBe('verbosify');
 });
-
 
 test('Verbosify should execute function correctly', () => {
   initializeVerbosify({
