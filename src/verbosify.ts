@@ -3,21 +3,21 @@ import { Config } from '.';
 const STRIP_COMMENTS = /(\/\/.*$)|(\/\*[\s\S]*?\*\/)|(\s*=[^,\)]*(('(?:\\'|[^'\r\n])*')|("(?:\\"|[^"\r\n])*"))|(\s*=[^,\)]*))/gm;
 const ARGUMENT_NAMES = /([^\s,]+)/g;
 
-function getFunctionName(func: Function) {
+function getFunctionName(func: Function): string {
   var ret = func.toString();
   ret = ret.substr('function '.length);
   ret = ret.substr(0, ret.indexOf('('));
   return ret;
 }
 
-function getParameterNames(func: Function) {
+function getParameterNames(func: Function): string[] {
   const fnStr = func.toString().replace(STRIP_COMMENTS, '');
   let result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
   if (result === null) result = [];
   return result;
 }
 
-export function verbosify<T extends Function>(originalFunction: T) {
+export function verbosify<T extends Function>(originalFunction: T): Function {
   if (!Config.initialized) {
     throw new Error('Must call initializeVerbosify before wrapping functions.');
   }

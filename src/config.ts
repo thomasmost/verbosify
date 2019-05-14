@@ -14,24 +14,25 @@ export interface IVerbosifyConfig {
 }
 
 class VerbosityConfig implements IVerbosifyConfig {
-  features: Record<string, VerbosifySetting>;
-  logger: SupportedLogTool;
-  initialized: boolean;
-  winston?: any;
-  constructor() {
+  public features: Record<string, VerbosifySetting>;
+  public logger: SupportedLogTool;
+  public initialized: boolean;
+  public winston?: any;
+  
+  public constructor() {
     this.features = {};
     this.logger = 'console';
     this.initialized = false;
   }
 
-  unmount() {
+  public unmount() {
     this.features = {};
     this.logger = 'console';
     this.initialized = false;
     delete this.winston;
   }
 
-  initialize(config: IVerbosifyConfig) {
+  public initialize(config: IVerbosifyConfig) {
     this.features = { ...config.features };
     this.logger = config.logger;
     switch (config.logger) {
@@ -52,7 +53,7 @@ class VerbosityConfig implements IVerbosifyConfig {
     this.initialized = true;
   }
 
-  log(message: string, keyValues?: Record<string, any>) {
+  public log(message: string, keyValues?: Record<string, any>) {
     switch (this.logger) {
       case 'console': {
         const keyValuesString = keyValues ? ': ' + JSON.stringify(keyValues) : '';
