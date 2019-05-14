@@ -5,54 +5,63 @@ interface IGranularVerbosifySetting {
 
 type VerbosifySetting = true | false | IGranularVerbosifySetting;
 
+type SupportedLogTool = 'winston' | 'console'
+
 export interface IVerbosifyConfig {
   features: Record<string, VerbosifySetting>;
-  logger: string;
+  logger: SupportedLogTool;
   winston?: any;
 }
 
 class VerbosityConfig implements IVerbosifyConfig {
   features: Record<string, VerbosifySetting>;
-  logger: string;
+  logger: SupportedLogTool;
   initialized: boolean;
   winston?: any;
   constructor() {
     this.features = {};
-    this.logger = '';
+    this.logger = 'console';
     this.initialized = false;
   }
 
   unmount() {
     this.features = {};
-    this.logger = '';
+    this.logger = 'console';
     this.initialized = false;
+    delete this.winston;
   }
 
   initialize(config: IVerbosifyConfig) {
     this.features = { ...config.features };
     this.logger = config.logger;
-    if (config.logger === 'winston') {
-      if (!config.winston) {
-        throw new Error('Expected a winston instance in the config.');
+    switch(config.logger) {
+      case 'console': {
+        break;
       }
-      this.winston = config.winston;
+      case 'winston': {
+        if (!config.winston) {
+          throw new Error('Expected a winston instance in the config.');
+        }
+        this.winston = config.winston;
+        break;
+      }
+      default: {
+        throw new Error('Unsupported log tool: ' + config.logger)
+      }
     }
     this.initialized = true;
   }
 
-  consoleLog(message: string, keyValues: Record<string, any>) {
-    const keyValuesString = keyValues ? JSON.stringify(keyValues) : '';
-    console.log(message + ': ' + keyValuesString);
-  }
-
-  log(message: string, keyValues: Record<string, any>) {
-    if (this.logger === 'console') {
-      return this.consoleLog(message, keyValues);
+  log(message: string, keyValues?: Record<string, any>) {
+    switch(this.logger) {
+      case 'console': {
+        const keyValuesString = keyValues ? ': ' + JSON.stringify(keyValues) : '';
+        return console.log(message + keyValuesString);
+      }
+      case 'winston': {
+        return this.winston.info(message, keyValues);
+      }
     }
-    if (this.logger === 'winston') {
-      return this.winston.info(message, keyValues);
-    }
-    throw new Error('Unrecognized Logger: ' + this.logger);
   }
 }
 
